@@ -2,15 +2,23 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static Transform Instance;
+
     [Header("Movement Settings")]
-    public float moveSpeed = 10f;
+    public float moveSpeed = 15f;
     public Vector2 screenBoundsPadding = new Vector2(0.5f, 0.5f);
+    public bool smoothFollow = false;
 
     private Vector3 touchOffset;
     private Camera mainCamera;
     private bool isDragging = false;
 
 
+    void Awake()
+    {
+        Instance = transform;
+    }
+    
     void Start()
     {
         mainCamera = Camera.main;
@@ -46,7 +54,16 @@ public class PlayerController : MonoBehaviour
                     {
                         Vector3 newPos = touchWorldPos + touchOffset;
                         newPos = ClampToScreenBounds(newPos);
-                        transform.position = Vector3.Lerp(transform.position, newPos, moveSpeed * Time.deltaTime);
+                        if (smoothFollow)
+                        {
+                            // Smooth Movement
+                            transform.position = Vector3.Lerp(transform.position, newPos, 0.8f);
+                        }
+                        else
+                        {
+                            // Movimiento rápido y directo
+                            transform.position = Vector3.MoveTowards(transform.position, newPos, moveSpeed * Time.deltaTime);
+                        }
                     }
                     break;
 
