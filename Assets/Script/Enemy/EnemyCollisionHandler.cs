@@ -5,21 +5,29 @@ public class EnemyCollisionHandler : MonoBehaviour
     [Header("Efecto de impacto")]
     [SerializeField] private GameObject impactVFX;
 
+    [Header("Enemy Health Settings")]
+    [SerializeField] private int health = 1;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void TakeDamage(int amount)
     {
-        Bullet bullet = collision.GetComponent<Bullet>();
-        if (bullet != null && gameObject.activeSelf)
-        {
-            if (impactVFX != null)
-            {
-                GameObject vfxInstance = Instantiate(impactVFX, collision.transform.position, Quaternion.identity);
-                Destroy(vfxInstance, 1f);
-            }
+        health -= amount;
 
-            bullet.ReturnToPool();
-            EnemyPool.Instance.ReturnEnemy(gameObject); 
+        if (impactVFX != null)
+        {
+            GameObject vfxInstance = Instantiate(impactVFX, transform.position, Quaternion.identity);
+            Destroy(vfxInstance, 1f);
         }
+
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        EnemyPool.Instance.ReturnEnemy(gameObject);
+        health = 1;
     }
 
 }

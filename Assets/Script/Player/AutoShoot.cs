@@ -31,7 +31,6 @@ public class AutoShoot : MonoBehaviour
         Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, detectionRadius, enemyLayer);
         if (enemies.Length > 0)
         {
-            Debug.Log("Detectado enemigo: " + enemies[0].name);
             return true;
         }
         return false;

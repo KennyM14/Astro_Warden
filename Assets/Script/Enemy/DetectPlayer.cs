@@ -48,7 +48,6 @@ public class DetectPlayer : MonoBehaviour
         float angle = Vector3.Angle(transform.up, directionToPlayer.normalized);
         if (angle > detectionAngle / 2f) return false;
 
-        // raycast para línea de visión
         //RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToPlayer.normalized, detectionRange, playerLayer | obstacleLayers);
 
         return true; //hit.collider != null && hit.collider.CompareTag("Player");
